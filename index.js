@@ -6,13 +6,60 @@ document.addEventListener("DOMContentLoaded", () =>{
     resetButton().addEventListener('click', resetHandler)
     submitButton().addEventListener('click', solve24)
     window.addEventListener('error', function (e) {
-    var error = e.error
-    alert("Check your equation")
+        var error = e.error
+        alert("Check your equation")
+    })
+    // debugger
+    loginContainer.addEventListener('submit', toggleLogin)
 })
 
-})
 const unsolvables = [[1, 1, 1, 1], [1, 1, 1, 2], [1, 1, 1, 3], [1, 1, 1, 4], [1, 1, 1, 5], [1, 1, 1, 6], [1, 1, 1, 7], [1, 1, 1, 9], [1, 1, 2, 2], [1, 1, 2, 3] , [1, 1, 2, 4], [1, 1, 2, 5], [1, 1, 3, 3], [1,1,5,9],[1,1,6,7], [1,1,7,7], [1,1,7,8], [1,1,7,9], [1,1,8,9], [1,1,9,9], [1,2,2,2], [1,2,2,3], [1,2,9,9], [1,3,5,5], [1,4,9,9], [1,5,5,7], [1,5,5,8], [1,5,7,7], [1,6,6,7], [1,6,7,7], [1,6,7,8], [1,7,7,7], [1,7,7,8], [1,8,9,9], [1,9,9,9], [2,2,2,2], [2,2,2,6], [2,2,7,9], [2,2,9,9], [2,3,3,4], [2,5,5,5], [2,5,5,6], [2,5,9,9], [2,6,7,7], [2,7,7,7], [2,7,7,9], [2,7,9,9], [2,9,9,9], [3,3,5,8], [3,4,6,7], [3,4,8,8], [3,5,5,5], [3,5,7,7], [4,4,5,9], [4,4,6,7], [4,4,9,9], [4,7,7,9], [4,7,7,9], [4,9,9,9], [5,5,5,7], [5,5,5,8], [5,5,6,9], [5,5,7,9], [5,5,7,9], [5,7,7,7], [5,7,7,8], [5,7,9,9], [5,8,9,9], [5,9,9,9], [6,6,6,7], [6,6,7,7], [6,6,7,8], [6,6,9,9], [6,7,7,7], [6,7,7,8], [6,7,7,9], [6,7,8,8], [6,9,9,9], [7,7,7,7], [7,7,7,8], [7,7,7,9], [7,7,8,8], [7,7,8,9], [7,7,9,9], [7,7,8,8], [7,7,8,9], [7,7,9,9], [7,8,8,8], [7,7,8,9], [7,7,9,9], [7,8,8,8], [7,8,9,9], [7,9,9,9], [8,8,8,8], [8,8,8,9], [8,8,9,9], [8,9,9,9], [9,9,9,9]]
 let joinedunsolves = unsolvables.map(arr => arr.join(''))
+const loginContainer = document.querySelector('.login')
+let loggedin = false
+
+function getHeader(){
+    return document.getElementById("header")
+}
+
+function toggleLogin(){
+    event.preventDefault()
+    // debugger
+    console.log("hitting")
+    loggedin = !loggedin
+    if (loggedin){
+        loginContainer.style.display = 'none'
+        processLogin()}
+    else{
+        loginContainer.style.display = 'block'
+    }
+}
+
+function processLogin(){
+    let newSessionName = event.target.name.value
+    let newSession = {name: newSessionName, score: 0}
+    fetch("http://localhost:3000/sessions",
+    {
+    method: "POST",
+    headers:
+    {
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newSession)
+})
+.then(r => r.json())
+.then(r => renderSession(r))
+}
+
+function renderSession(r){
+    getHeader().innerText = `Welcome: ${r.name} `
+    let scoreDiv = document.createElement("div")
+    scoreDiv.id = "score-id"
+    scoreDiv.dataset.id = r.id
+    scoreDiv.innerText = `Current Score: ${r.score}`
+    getHeader().appendChild(scoreDiv)
+    console.log(r)
+}
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -59,6 +106,23 @@ function nextGameHandler(){
     resetHandler()
     get24From()
 }
+
+function incrementScore(){
+    debugger
+    let scoreText = document.getElementById("score-id")
+    let id = scoreText.dataset.id
+    let currentScore = parseInt(scoreText.innerText.split(" ")[2])
+    let newScore = ++currentScore
+    scoreText.innerText = `Current Score: ${newScore}`
+    fetch(`http://localhost:3000/sessions/${id}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({"score": newScore})
+    }).then(r=>r.json())
+    .then(console.log)
+    }
 
 function clearDiv(div){
    while(div.firstChild){
@@ -122,6 +186,7 @@ function solve24(){
         alert(`You got 24 through ${UserBox().value}!`)
         event.target.id = "next-game-button"
         event.target.innerText = "Next Game"
+        incrementScore()
         event.target.removeEventListener("click", solve24)
         nextGameButton().addEventListener("click", nextGameHandler)}
 
