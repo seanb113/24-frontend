@@ -5,10 +5,7 @@ document.addEventListener("DOMContentLoaded", () =>{
     get24From()
     resetButton().addEventListener('click', resetHandler)
     submitButton().addEventListener('click', solve24)
-    window.addEventListener('error', function (e) {
-        var error = e.error
-        alert("Check your equation")
-    })
+    giveUpButton().addEventListener(`click`, giveUpHandler)
     // debugger
     loginContainer.addEventListener('submit', toggleLogin)
 })
@@ -16,24 +13,18 @@ document.addEventListener("DOMContentLoaded", () =>{
 const unsolvables = [[1, 1, 1, 1], [1, 1, 1, 2], [1, 1, 1, 3], [1, 1, 1, 4], [1, 1, 1, 5], [1, 1, 1, 6], [1, 1, 1, 7], [1, 1, 1, 9], [1, 1, 2, 2], [1, 1, 2, 3] , [1, 1, 2, 4], [1, 1, 2, 5], [1, 1, 3, 3], [1,1,5,9],[1,1,6,7], [1,1,7,7], [1,1,7,8], [1,1,7,9], [1,1,8,9], [1,1,9,9], [1,2,2,2], [1,2,2,3], [1,2,9,9], [1,3,5,5], [1,4,9,9], [1,5,5,7], [1,5,5,8], [1,5,7,7], [1,6,6,7], [1,6,7,7], [1,6,7,8], [1,7,7,7], [1,7,7,8], [1,8,9,9], [1,9,9,9], [2,2,2,2], [2,2,2,6], [2,2,7,9], [2,2,9,9], [2,3,3,4], [2,5,5,5], [2,5,5,6], [2,5,9,9], [2,6,7,7], [2,7,7,7], [2,7,7,9], [2,7,9,9], [2,9,9,9], [3,3,5,8], [3,4,6,7], [3,4,8,8], [3,5,5,5], [3,5,7,7], [4,4,5,9], [4,4,6,7], [4,4,9,9], [4,7,7,9], [4,7,7,9], [4,9,9,9], [5,5,5,7], [5,5,5,8], [5,5,6,9], [5,5,7,9], [5,5,7,9], [5,7,7,7], [5,7,7,8], [5,7,9,9], [5,8,9,9], [5,9,9,9], [6,6,6,7], [6,6,7,7], [6,6,7,8], [6,6,9,9], [6,7,7,7], [6,7,7,8], [6,7,7,9], [6,7,8,8], [6,9,9,9], [7,7,7,7], [7,7,7,8], [7,7,7,9], [7,7,8,8], [7,7,8,9], [7,7,9,9], [7,7,8,8], [7,7,8,9], [7,7,9,9], [7,8,8,8], [7,7,8,9], [7,7,9,9], [7,8,8,8], [7,8,9,9], [7,9,9,9], [8,8,8,8], [8,8,8,9], [8,8,9,9], [8,9,9,9], [9,9,9,9]]
 let joinedunsolves = unsolvables.map(arr => arr.join(''))
 const loginContainer = document.querySelector('.login')
-let loggedin = false
-
+const gameContainer = document.querySelector('.game-session')
+gameContainer.style.display = 'none'
 function getHeader(){
     return document.getElementById("header")
 }
 
 function toggleLogin(){
     event.preventDefault()
-    // debugger
-    console.log("hitting")
-    loggedin = !loggedin
-    if (loggedin){
-        loginContainer.style.display = 'none'
-        processLogin()}
-    else{
-        loginContainer.style.display = 'block'
+    loginContainer.style.display = 'none',
+    gameContainer.style.display = 'block'
+    processLogin()
     }
-}
 
 function processLogin(){
     let newSessionName = event.target.name.value
@@ -105,10 +96,12 @@ function nextGameHandler(){
     submitButton().addEventListener('click', solve24)
     resetHandler()
     get24From()
+    endGameButton().id = "give-up-button"
+    giveUpButton().innerText = "Give Up?"
 }
 
 function incrementScore(){
-    debugger
+    // debugger
     let scoreText = document.getElementById("score-id")
     let id = scoreText.dataset.id
     let currentScore = parseInt(scoreText.innerText.split(" ")[2])
@@ -157,6 +150,7 @@ function populateUserInput(numBtn){
     UserBox().value = UserBox().value + numBtn.innerText
     numBtn.disabled = true
 }
+
 function submitButton(){
     return document.getElementById('submit-button')
 }
@@ -167,28 +161,82 @@ function endGameButton(){
     return document.getElementById('end-game')
 }
 
+function giveUpButton(){
+    return document.getElementById('give-up-button')
+}
+
+function endGameButton(){
+    return document.getElementById('end-game-button')
+}
+
 function numberButtons(){
     return document.getElementsByClassName('num-buttons')
 }
 
+function endGame(){
+    console.log("ended")
+}
+
+function giveUpHandler(){
+    // debugger
+    event.target.disabled = true
+    let f1 = parseInt(Array.from(numberButtons())[0].innerText)
+    let f2 = parseInt(Array.from(numberButtons())[1].innerText)
+    let f3 = parseInt(Array.from(numberButtons())[2].innerText)
+    let f4 = parseInt(Array.from(numberButtons())[3].innerText)
+    fetch(`https://helloacm.com/api/24/?a=${f1}&b=${f2}&c=${f3}&d=${f4}`)
+    .then(r=>r.json())
+    .then(r=> renderSolution(r))
+}
+
+function renderSolution(r){
+    let solutionContainer = document.querySelector('.solutions')
+    let solutionUl = document.createElement("ul")
+    solutionUl.innerText = "Here are all possible solutions:"
+    solutionContainer.appendChild(solutionUl)
+    r.result.forEach(sol=>{
+        let solutionLi = document.createElement('li')
+        solutionUl.appendChild(solutionLi)
+        solutionLi.innerText = sol
+    })
+
+}
 function isDisabled(){
     let checkedButtons = Array.from(numberButtons())
     // debugger
     return checkedButtons.map(btn => btn.disabled)
 }
-function solve24(){
+
+function isLegit(){
+    let userSolution = UserBox().value.split(/[^\d]/).filter(word => word.length > 0)
     // debugger
-    if (isDisabled().every(v => v === true)){
-     
+    return (userSolution.length === 4)
+}
+function solve24(){
+        window.addEventListener('error', function (e) {
+        var error = e.error
+        alert("Check your equation")
+    })
+    
+    if ((isDisabled().every(v => v === true)) && (isLegit())){
+     console.log("hit first")
         // if parseInt(UserBox().value)
         if (math.evaluate(UserBox().value) == 24){
+            console.log("hit second")
+        incrementScore()
         // if userSolution == 24
         alert(`You got 24 through ${UserBox().value}!`)
         event.target.id = "next-game-button"
         event.target.innerText = "Next Game"
-        incrementScore()
         event.target.removeEventListener("click", solve24)
-        nextGameButton().addEventListener("click", nextGameHandler)}
+        nextGameButton().addEventListener("click", nextGameHandler)
+        // debugger
+        giveUpButton().id = "end-game-button"
+        endGameButton().innerText = "End Game"
+        // giveUpButton().removeEventLIstener("click", ()=> alert("ended"))
+        endGameButton().addEventListener("click", ()=> console.log("h"))}
+
+
 
         /* backend info needed
 
@@ -200,6 +248,6 @@ function solve24(){
         else
         {alert("Nope. Try again!")
         resetHandler()}}
-    else alert("You must use all numbers")
+    else alert("Invalid input. Please use all the numbers once.")
 }
 
