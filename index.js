@@ -333,7 +333,9 @@ function newGameHandler(){
 function solutionList(){
     return document.querySelector('.solutions')
 }
-
+function deleteButton(){
+    return document.getElementById("delete-button")
+}
 function newGameButton(){
     return document.getElementById("new-game-button")
 }
