@@ -2,11 +2,11 @@ document.addEventListener("DOMContentLoaded", () =>{
     console.log("connecteddddd")
     operators()
     UserBox().disabled = true
-    get24From()
+    // get24From()
+    difficultyButton().addEventListener('click', chooseDifficulty)
     resetButton().addEventListener('click', resetHandler)
     submitButton().addEventListener('click', solve24)
     giveUpButton().addEventListener(`click`, giveUpHandler)
-    // debugger
     loginContainer.addEventListener('submit', toggleLogin)
 })
 
@@ -15,14 +15,32 @@ let joinedunsolves = unsolvables.map(arr => arr.join(''))
 const loginContainer = document.querySelector('.login')
 const gameContainer = document.querySelector('.game-session')
 gameContainer.style.display = 'none'
+difficultyButton().style.display = 'none'
 function getHeader(){
     return document.getElementById("header")
+}
+function chooseDifficulty(){
+    if (event.target.value = "selector"){
+        event.target.dataset.id = "clicked"
+    let sec = parseInt(event.target.innerText.split(" ")[0])
+    console.log(sec)
+    let timer = setInterval(function(){
+        document.getElementById('safeTimerDisplay').innerHTML=':' +sec
+        sec--
+        if (sec < 0) {
+            clearInterval(timer)
+            giveUpHandler()
+            // numberContainer().disabled = true
+        }
+    }, 1000)
+    get24From()
+    gameContainer.style.display = 'block'}
 }
 
 function toggleLogin(){
     event.preventDefault()
     loginContainer.style.display = 'none',
-    gameContainer.style.display = 'block'
+    difficultyButton().style.display = 'block'
     processLogin()
     }
 
@@ -74,6 +92,8 @@ function makeNumButtons(gameNumsArray){
 }
 
 function get24From(){
+    difficultyButton().style.display = 'none'
+    clearDiv(solutionList())
 const gameNumbers = Array.from({length: 4},
     () => getRandomInt(1, 9))
     checkGameNums(gameNumbers) ? get24From() : makeNumButtons(gameNumbers)
@@ -93,10 +113,11 @@ function nextGameHandler(){
     event.target.id = "submit-button"
     event.target.innerText = "Submit"
     event.target.removeEventListener("click", nextGameHandler)
+    // debugger
+    clearDiv(solutionList())
     submitButton().addEventListener('click', solve24)
     resetHandler()
     get24From()
-    endGameButton().id = "give-up-button"
     giveUpButton().innerText = "Give Up?"
 }
 
@@ -127,6 +148,10 @@ function resetButton(){
     return document.getElementById('reset-button')
 }
 
+function selectedDifficulty(){
+    return document.querySelector('[data-id="clicked"]')
+}
+
 function resetHandler(){
     UserBox().value = ""
     document.querySelectorAll('button').forEach(button => {
@@ -151,14 +176,23 @@ function populateUserInput(numBtn){
     numBtn.disabled = true
 }
 
+function difficultyButton(){
+    return document.getElementById('instruction-page')
+}
+function easyButton(){
+    return document.getElementById('easy')
+}
+function mediumButton(){
+    return document.getElementById('medium')
+}
+function hardButton(){
+    return document.getElementById('hard')
+}
 function submitButton(){
     return document.getElementById('submit-button')
 }
 function nextGameButton(){
     return document.getElementById('next-game-button')
-}
-function endGameButton(){
-    return document.getElementById('end-game')
 }
 
 function giveUpButton(){
@@ -173,13 +207,9 @@ function numberButtons(){
     return document.getElementsByClassName('num-buttons')
 }
 
-function endGame(){
-    console.log("ended")
-}
-
 function giveUpHandler(){
     // debugger
-    event.target.disabled = true
+    giveUpButton().disabled = true
     let f1 = parseInt(Array.from(numberButtons())[0].innerText)
     let f2 = parseInt(Array.from(numberButtons())[1].innerText)
     let f3 = parseInt(Array.from(numberButtons())[2].innerText)
@@ -192,6 +222,7 @@ function giveUpHandler(){
 function renderSolution(r){
     let solutionContainer = document.querySelector('.solutions')
     let solutionUl = document.createElement("ul")
+    solutionUl.id = "solution-list"
     solutionUl.innerText = "Here are all possible solutions:"
     solutionContainer.appendChild(solutionUl)
     r.result.forEach(sol=>{
@@ -199,7 +230,33 @@ function renderSolution(r){
         solutionUl.appendChild(solutionLi)
         solutionLi.innerText = sol
     })
+    
+    resetButton().disabled = true
+    submitButton().removeEventListener("click", solve24)
+    submitButton().id = "new-game-button"
+    newGameButton().innerText = "New Game"
+    // debugger
+    clearDiv(numberContainer())
+    newGameButton().addEventListener('click', newGameHandler) 
+}
 
+function newGameHandler(){
+    debugger
+    resetButton().disabled = false
+    giveUpButton().disabled = false
+    newGameButton().removeEventListener("click", newGameHandler)
+    newGameButton().id = "submit-button"
+    submitButton().innerText = "Submit"
+    submitButton().addEventListener('click', solve24)
+    get24From()
+
+}
+function solutionList(){
+    return document.querySelector('.solutions')
+}
+
+function newGameButton(){
+    return document.getElementById("new-game-button")
 }
 function isDisabled(){
     let checkedButtons = Array.from(numberButtons())
@@ -213,10 +270,10 @@ function isLegit(){
     return (userSolution.length === 4)
 }
 function solve24(){
-        window.addEventListener('error', function (e) {
-        var error = e.error
-        alert("Check your equation")
-    })
+    //     window.addEventListener('error', function (e) {
+    //     var error = e.error
+    //     alert("Check your equation")
+    // })
     
     if ((isDisabled().every(v => v === true)) && (isLegit())){
      console.log("hit first")
@@ -231,21 +288,13 @@ function solve24(){
         event.target.removeEventListener("click", solve24)
         nextGameButton().addEventListener("click", nextGameHandler)
         // debugger
-        giveUpButton().id = "end-game-button"
-        endGameButton().innerText = "End Game"
-        // giveUpButton().removeEventLIstener("click", ()=> alert("ended"))
-        endGameButton().addEventListener("click", ()=> console.log("h"))}
+        giveUpButton().innerText = "Show all solutions"
+        // event.target.nextElementSibling.id = "end-game"
+        // event.target.nextElementSibling.innerText = "End Streak"
+        // endGameButton().addEventListener("click", ()=>console.log("end"))}
+        // */
 
-
-
-        /* backend info needed
-
-        event.target.nextElementSibling.id = "end-game"
-        event.target.nextElementSibling.innerText = "End Streak"
-        endGameButton().addEventListener("click", ()=>console.log("end"))}
-        */
-
-        else
+    }else
         {alert("Nope. Try again!")
         resetHandler()}}
     else alert("Invalid input. Please use all the numbers once.")
