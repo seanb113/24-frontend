@@ -20,6 +20,11 @@ difficultyButton().style.display = 'none'
 function getHeader(){
     return document.getElementById("header")
 }
+
+function getStatsDiv(){
+    return document.getElementById("stats-div")
+}
+
 function timerContainer(){
     return document.getElementById('safeTimer')
 }
@@ -37,6 +42,7 @@ function currentTimer(){
 
 function chooseDifficulty(){
     if (event.target.value === "selector"){
+        getStatsDiv().style.dusplay = "block"
         event.target.dataset.id = "clicked"
         createTimer()
     let sec = parseInt(event.target.innerText.split(" ")[0])
@@ -52,7 +58,8 @@ function chooseDifficulty(){
         }
     }, 1000)
     get24From()
-    gameContainer.style.display = 'block'}
+    gameContainer.style.display = 'block'
+    }
     else if (event.target.innerText === "New Game" || event.target.innerText === "Next Game"){
         createTimer()
             let sec = parseInt(selectedDifficulty().innerText.split(" ")[0])
@@ -132,16 +139,20 @@ function updateFastestTime(){
     }
 
 function renderSession(r){
+    let hideMainHeader = document.getElementById("main-header")
+    hideMainHeader.style.display = "none"
+    getStatsDiv().appendChild(getHeader())
     getHeader().innerText = `Welcome: ${r.name} `
     let scoreDiv = document.createElement("div")
     scoreDiv.id = "score-id"
     scoreDiv.dataset.id = r.id
     scoreDiv.innerText = `Current Score: ${r.score}`
-    debugger
+    // debugger
     let timeDiv = document.createElement("div")
     timeDiv.id = "fastest-solve-time"
     timeDiv.dataset.id = r.id
     timeDiv.innerText = `Fastest solved equation: 1+1 in 00:${r.fastest_time} seconds`
+    // debugger
     getHeader().appendChild(scoreDiv)
     getHeader().appendChild(timeDiv)
     console.log(r)

@@ -1,52 +1,73 @@
-<h1 id="header">Please login</h1>
-<div class="login">
-<form class="add-user">
-<input id="login-name" 
-        type="text" 
-        value="" 
-        name="name">
-<input type="submit"
-        value="Enter Name"
-        name="submit"
-        class="submit">
-</form>
-</div>
+<!DOCTYPE html>
+<html>
+    <meta charset="UTF-8">
+    <head>
+        <title>24 Game</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Righteous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+        <link rel="stylesheet" type="text/css" href="./app/assets/stylesheets/application.css">
+    </head>
 
-<div id="instruction-page">
-    <p>Object of the game: Make the number 24 from the four numbers shown. You can add, subtract, multiply, divide, and exponentiate. Use all four numbers on the card, but use each number only once. You do not have to use all four operations.</p>
-    <p>Choose your difficulty below</p>
-    <button id="easy" value="selector">90 Seconds</button>
-    <button id="medium" value="selector">60 Seconds</button>
-    <button id="hard" value="selector">30 Seconds</button>
-</div>
-
-<div class="game-session">
-<h1>Numbers</h1>
-<h3 id="number-container"></h3>
-<h3 id="operators">
-    <button id="opening-parentheses">(</button>
-    <button id="closing-parentheses">)</button>
-    <button id="addition">+</button>
-    <button id="subtraction">-</button>
-    <button id="division">/</button>
-    <button id="multiplication">*</button>
-    <button id="exponent">^</button>
-</h3>
-
-<div >
-    <input type="text" value="" id="user-input-box" placeholder="Use buttons.">
-</div>
-    <button id="reset-button">Reset</button>
-    <button id="submit-button">Submit</button>
-    <button id="give-up-button">Give Up?</button><div
-        class="solutions">
-    </div>
-    <h2>Countdown</h2>
-    <div id="safeTimer">
+    <body id="body">
+        <h1 id="main-header" data-shadow='Welcome!'>Welcome!</h1>
+        <div class="ui form login" id="login-form">
+            <h2 id="header">Please login</h2>
+                <div class="login">
+                    <form class="add-user">
+                        <div class="field">
+                            <input id="login-name" 
+                                    type="text" 
+                                    placeholder="Name" 
+                                    name="name"> </div>
+                        <div >
+                            <input type="submit"
+                                    value="Enter Name"
+                                    name="submit"
+                                    class="submit ui teal button big">
+                        </div>
+                    </form>
+                </div>
         </div>
-        
-</div>
+
+        <div id="stats-div"></div>
+
+        <div id="instruction-page">
+            <p>Object of the game: Make the number 24 from the four numbers shown. You can add, subtract, multiply, divide, and exponentiate. Use all four numbers on the card, but use each number only once. You do not have to use all four operations.</p>
+            <p>Choose your difficulty below</p>
+            <button id="easy" value="selector">90 Seconds</button>
+            <button id="medium" value="selector">60 Seconds</button>
+            <button id="hard" value="selector">30 Seconds</button>
+        </div>
+
+        <div class="game-session">
+        <h1>Numbers</h1>
+        <h3 id="number-container"></h3>
+        <h3 id="operators">
+            <button id="opening-parentheses">(</button>
+            <button id="closing-parentheses">)</button>
+            <button id="addition">+</button>
+            <button id="subtraction">-</button>
+            <button id="division">/</button>
+            <button id="multiplication">*</button>
+            <button id="exponent">^</button>
+        </h3>
+
+        <div >
+            <input type="text" value="" id="user-input-box" placeholder="Use buttons.">
+        </div>
+            <button id="reset-button">Reset</button>
+            <button id="submit-button">Submit</button>
+            <button id="give-up-button">Give Up?</button><div
+                class="solutions">
+            </div>
+            <h2>Countdown</h2>
+            <div id="safeTimer">
+                </div>
+                
+        </div>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/6.6.0/math.js" type="text/javascript"></script>
-<script src="index.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/6.6.0/math.js" type="text/javascript"></script>
+        <script src="index.js"></script>
+    </body>
+</html>
