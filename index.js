@@ -79,7 +79,7 @@ function toggleLogin(){
 
 function processLogin(){
     let newSessionName = event.target.name.value
-    let newSession = {name: newSessionName, score: 0}
+    let newSession = {name: newSessionName, score: 0, fastest_time: 0}
     fetch("http://localhost:3000/sessions",
     {
     method: "POST",
@@ -93,13 +93,57 @@ function processLogin(){
 .then(r => renderSession(r))
 }
 
+// function getFastestTime(){
+//     let idContainer = document.getElementById("score-id")
+//     let id = idContainer.dataset.id
+//     // debugger
+//     fetch(`http://localhost:3000/sessions/${id}`)
+//     .then(r=>r.json())
+//     .then(r=>compareScore(r))
+// }
+
+function compareTimes(){
+    console.log("compareTimes")
+    let recordContainer = document.getElementById("fastest-solve-time")
+    let currentRecord = parseInt(recordContainer.innerText.split("0:")[1])
+        // debugger
+    let difficulty = parseInt(selectedDifficulty().innerText.split(" ")[0])
+    let clockedAt = parseInt(currentTimer().innerText.split(":")[1])
+    if (clockedAt > currentRecord){
+        updateFastestTime()
+        alert("You beat your previous fastest solve time!")
+        recordContainer.innerText = `Fastest solved equation: ${UserBox().value} in 00:${difficulty - clockedAt} seconds`
+    }
+}
+
+function updateFastestTime(){
+    let scoreText = document.getElementById("fastest-solve-time")
+    let id = scoreText.dataset.id
+    let newRecord = parseInt(currentTimer().innerText.split(":")[1])
+    // debugger
+    fetch(`http://localhost:3000/sessions/${id}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({"fastest_time": newRecord})
+    }).then(r=>r.json())
+    .then(console.log)
+    }
+
 function renderSession(r){
     getHeader().innerText = `Welcome: ${r.name} `
     let scoreDiv = document.createElement("div")
     scoreDiv.id = "score-id"
     scoreDiv.dataset.id = r.id
     scoreDiv.innerText = `Current Score: ${r.score}`
+    debugger
+    let timeDiv = document.createElement("div")
+    timeDiv.id = "fastest-solve-time"
+    timeDiv.dataset.id = r.id
+    timeDiv.innerText = `Fastest solved equation: 1+1 in 00:${r.fastest_time} seconds`
     getHeader().appendChild(scoreDiv)
+    getHeader().appendChild(timeDiv)
     console.log(r)
 }
 
@@ -316,8 +360,8 @@ function solve24(){
         if (math.evaluate(UserBox().value) == 24){
             console.log("hit second")
         incrementScore()
-        // if userSolution == 24
         alert(`You got 24 through ${UserBox().value}!`)
+        compareTimes()
         event.target.id = "next-game-button"
         event.target.innerText = "Next Game"
         event.target.removeEventListener("click", solve24)
