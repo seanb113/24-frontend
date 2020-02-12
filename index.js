@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () =>{
 
 const unsolvables = [[1, 1, 1, 1], [1, 1, 1, 2], [1, 1, 1, 3], [1, 1, 1, 4], [1, 1, 1, 5], [1, 1, 1, 6], [1, 1, 1, 7], [1, 1, 1, 9], [1, 1, 2, 2], [1, 1, 2, 3] , [1, 1, 2, 4], [1, 1, 2, 5], [1, 1, 3, 3], [1,1,5,9],[1,1,6,7], [1,1,7,7], [1,1,7,8], [1,1,7,9], [1,1,8,9], [1,1,9,9], [1,2,2,2], [1,2,2,3], [1,2,9,9], [1,3,5,5], [1,4,9,9], [1,5,5,7], [1,5,5,8], [1,5,7,7], [1,6,6,7], [1,6,7,7], [1,6,7,8], [1,7,7,7], [1,7,7,8], [1,8,9,9], [1,9,9,9], [2,2,2,2], [2,2,2,6], [2,2,7,9], [2,2,9,9], [2,3,3,4], [2,5,5,5], [2,5,5,6], [2,5,9,9], [2,6,7,7], [2,7,7,7], [2,7,7,9], [2,7,9,9], [2,9,9,9], [3,3,5,8], [3,4,6,7], [3,4,8,8], [3,5,5,5], [3,5,7,7], [4,4,5,9], [4,4,6,7], [4,4,9,9], [4,7,7,9], [4,7,7,9], [4,9,9,9], [5,5,5,7], [5,5,5,8], [5,5,6,9], [5,5,7,9], [5,5,7,9], [5,7,7,7], [5,7,7,8], [5,7,9,9], [5,8,9,9], [5,9,9,9], [6,6,6,7], [6,6,7,7], [6,6,7,8], [6,6,9,9], [6,7,7,7], [6,7,7,8], [6,7,7,9], [6,7,8,8], [6,9,9,9], [7,7,7,7], [7,7,7,8], [7,7,7,9], [7,7,8,8], [7,7,8,9], [7,7,9,9], [7,7,8,8], [7,7,8,9], [7,7,9,9], [7,8,8,8], [7,7,8,9], [7,7,9,9], [7,8,8,8], [7,8,9,9], [7,9,9,9], [8,8,8,8], [8,8,8,9], [8,8,9,9], [8,9,9,9], [9,9,9,9]]
 let joinedunsolves = unsolvables.map(arr => arr.join(''))
+let timer
 const loginContainer = document.querySelector('.login')
 const gameContainer = document.querySelector('.game-session')
 gameContainer.style.display = 'none'
@@ -19,22 +20,54 @@ difficultyButton().style.display = 'none'
 function getHeader(){
     return document.getElementById("header")
 }
+function timerContainer(){
+    return document.getElementById('safeTimer')
+}
+
+function createTimer(){
+    let thisTimer = document.createElement('p')
+    thisTimer.id = "safeTimerDisplay"
+    timerContainer().appendChild(thisTimer)
+    return thisTimer
+}
+
+function currentTimer(){
+    return document.getElementById("safeTimerDisplay")
+}
+
 function chooseDifficulty(){
-    if (event.target.value = "selector"){
+    if (event.target.value === "selector"){
         event.target.dataset.id = "clicked"
+        createTimer()
     let sec = parseInt(event.target.innerText.split(" ")[0])
     console.log(sec)
-    let timer = setInterval(function(){
-        document.getElementById('safeTimerDisplay').innerHTML=':' +sec
+    timer = setInterval(function(){
+        timerContainer().children[0].innerHTML=':' +sec
         sec--
         if (sec < 0) {
             clearInterval(timer)
+            // debugger
             giveUpHandler()
             // numberContainer().disabled = true
         }
     }, 1000)
     get24From()
     gameContainer.style.display = 'block'}
+    else if (event.target.innerText === "New Game" || event.target.innerText === "Next Game"){
+        createTimer()
+            let sec = parseInt(selectedDifficulty().innerText.split(" ")[0])
+    console.log(sec)
+    timer = setInterval(function(){
+        timerContainer().children[0].innerHTML=':' +sec
+        sec--
+        if (sec < 0) {
+        // debugger
+            clearInterval(timer)
+            giveUpHandler()
+        }
+    }, 1000)
+        get24From()
+    }
 }
 
 function toggleLogin(){
@@ -109,20 +142,20 @@ function checkGameNums(thisThing){
  }
 
 function nextGameHandler(){
+    // clearInterval(timer)
+    chooseDifficulty()
     clearDiv(numberContainer())
     event.target.id = "submit-button"
     event.target.innerText = "Submit"
     event.target.removeEventListener("click", nextGameHandler)
-    // debugger
     clearDiv(solutionList())
     submitButton().addEventListener('click', solve24)
     resetHandler()
-    get24From()
     giveUpButton().innerText = "Give Up?"
+    get24From()
 }
 
 function incrementScore(){
-    // debugger
     let scoreText = document.getElementById("score-id")
     let id = scoreText.dataset.id
     let currentScore = parseInt(scoreText.innerText.split(" ")[2])
@@ -209,6 +242,7 @@ function numberButtons(){
 
 function giveUpHandler(){
     // debugger
+    clearInterval(timer)
     giveUpButton().disabled = true
     let f1 = parseInt(Array.from(numberButtons())[0].innerText)
     let f2 = parseInt(Array.from(numberButtons())[1].innerText)
@@ -241,14 +275,15 @@ function renderSolution(r){
 }
 
 function newGameHandler(){
-    debugger
+    // clearInterval(timer)
+    chooseDifficulty()
     resetButton().disabled = false
     giveUpButton().disabled = false
     newGameButton().removeEventListener("click", newGameHandler)
     newGameButton().id = "submit-button"
     submitButton().innerText = "Submit"
     submitButton().addEventListener('click', solve24)
-    get24From()
+//   debugger
 
 }
 function solutionList(){
@@ -286,6 +321,7 @@ function solve24(){
         event.target.id = "next-game-button"
         event.target.innerText = "Next Game"
         event.target.removeEventListener("click", solve24)
+        clearInterval(timer)
         nextGameButton().addEventListener("click", nextGameHandler)
         // debugger
         giveUpButton().innerText = "Show all solutions"
