@@ -42,7 +42,7 @@ function currentTimer(){
 
 function chooseDifficulty(){
     if (event.target.value === "selector"){
-        getStatsDiv().style.dusplay = "block"
+        getStatsDiv().style.display = "block"
         event.target.dataset.id = "clicked"
         createTimer()
     let sec = parseInt(event.target.innerText.split(" ")[0])

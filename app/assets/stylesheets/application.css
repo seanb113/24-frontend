@@ -61,6 +61,7 @@
     color: white;
     font-family: 'Righteous', serif;
     font-size: 1em; 
+    display: none;  
 }
 
 #header{
