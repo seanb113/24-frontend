@@ -170,10 +170,11 @@ function numberContainer() {
 
 function makeNumButtons(gameNumsArray){
     console.log("making buttons")
+    let i = 1
     gameNumsArray.forEach(num => {
     let numBtn = document.createElement('button')
     numBtn.innerText = num
-    numBtn.className = "num-buttons"
+    numBtn.className = 'num-buttons'
     numberContainer().appendChild(numBtn)
     numBtn.addEventListener("click", () => populateUserInput(numBtn))
     })
@@ -182,7 +183,7 @@ function makeNumButtons(gameNumsArray){
 function get24From(){
     difficultyButton().style.display = 'none'
     clearDiv(solutionList())
-const gameNumbers = Array.from({length: 4},
+    const gameNumbers = Array.from({length: 4},
     () => getRandomInt(1, 9))
     checkGameNums(gameNumbers) ? get24From() : makeNumButtons(gameNumbers)
     // makeNumButtons(gameNumbers)
@@ -191,13 +192,11 @@ const gameNumbers = Array.from({length: 4},
 function checkGameNums(thisThing){
     console.log("checking numbers")
     let sorted = thisThing.sort(function(a, b){return a - b})
-    // if _.isEqual(sorted, unsolvables)
     let joined = sorted.join('')
     return unsolvables.find(arr => arr.join('').includes(joined))
  }
 
 function nextGameHandler(){
-    // clearInterval(timer)
     chooseDifficulty()
     clearDiv(numberContainer())
     event.target.id = "submit-button"
@@ -344,7 +343,6 @@ function newGameHandler(){
 function solutionList(){
     return document.querySelector('.solutions')
 }
-
 function newGameButton(){
     return document.getElementById("new-game-button")
 }
