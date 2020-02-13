@@ -54,7 +54,6 @@ function chooseDifficulty(){
             clearInterval(timer)
             // debugger
             giveUpHandler()
-            // numberContainer().disabled = true
         }
     }, 1000)
     get24From()
@@ -100,26 +99,18 @@ function processLogin(){
 .then(r => renderSession(r))
 }
 
-// function getFastestTime(){
-//     let idContainer = document.getElementById("score-id")
-//     let id = idContainer.dataset.id
-//     // debugger
-//     fetch(`http://localhost:3000/sessions/${id}`)
-//     .then(r=>r.json())
-//     .then(r=>compareScore(r))
-// }
-
 function compareTimes(){
     console.log("compareTimes")
     let recordContainer = document.getElementById("fastest-solve-time")
     let currentRecord = parseInt(recordContainer.innerText.split("0:")[1])
-        // debugger
+    // let mode = selectedDifficulty().id
+        debugger
     let difficulty = parseInt(selectedDifficulty().innerText.split(" ")[0])
     let clockedAt = parseInt(currentTimer().innerText.split(":")[1])
     if (clockedAt > currentRecord){
         updateFastestTime()
         alert("You beat your previous fastest solve time!")
-        recordContainer.innerText = `Fastest solved equation: ${UserBox().value} in 00:${difficulty - clockedAt} seconds`
+        recordContainer.innerText = `Fastest solved equation: ${UserBox().value} in 0:${difficulty - clockedAt} seconds`
     }
 }
 
@@ -151,7 +142,7 @@ function renderSession(r){
     let timeDiv = document.createElement("div")
     timeDiv.id = "fastest-solve-time"
     timeDiv.dataset.id = r.id
-    timeDiv.innerText = `Fastest solved equation: 1+1 in 00:${r.fastest_time} seconds`
+    timeDiv.innerText = `Fastest solved equation: 1+1 in 0:${r.fastest_time}0 seconds`
     // debugger
     getHeader().appendChild(scoreDiv)
     getHeader().appendChild(timeDiv)
@@ -174,7 +165,7 @@ function makeNumButtons(gameNumsArray){
     gameNumsArray.forEach(num => {
     let numBtn = document.createElement('button')
     numBtn.innerText = num
-    numBtn.className = 'num-buttons'
+    numBtn.className = "ui inverted grey button"
     numberContainer().appendChild(numBtn)
     numBtn.addEventListener("click", () => populateUserInput(numBtn))
     })
@@ -197,6 +188,7 @@ function checkGameNums(thisThing){
  }
 
 function nextGameHandler(){
+    UserBox().value= ""
     chooseDifficulty()
     clearDiv(numberContainer())
     event.target.id = "submit-button"
@@ -291,7 +283,7 @@ function endGameButton(){
 }
 
 function numberButtons(){
-    return document.getElementsByClassName('num-buttons')
+    return document.getElementsByClassName('ui inverted grey button')
 }
 
 function giveUpHandler(){
@@ -330,6 +322,7 @@ function renderSolution(r){
 
 function newGameHandler(){
     // clearInterval(timer)
+    UserBox().value = ""
     chooseDifficulty()
     resetButton().disabled = false
     giveUpButton().disabled = false
@@ -362,7 +355,7 @@ function solve24(){
     //     var error = e.error
     //     alert("Check your equation")
     // })
-    
+    debugger
     if ((isDisabled().every(v => v === true)) && (isLegit())){
      console.log("hit first")
         // if parseInt(UserBox().value)
@@ -376,12 +369,7 @@ function solve24(){
         event.target.removeEventListener("click", solve24)
         clearInterval(timer)
         nextGameButton().addEventListener("click", nextGameHandler)
-        // debugger
         giveUpButton().innerText = "Show all solutions"
-        // event.target.nextElementSibling.id = "end-game"
-        // event.target.nextElementSibling.innerText = "End Streak"
-        // endGameButton().addEventListener("click", ()=>console.log("end"))}
-        // */
 
     }else
         {alert("Nope. Try again!")
