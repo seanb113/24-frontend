@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:200');
 @import url(https://fonts.googleapis.com/css?family=Righteous);
 
 *, *:before, *:after {
@@ -72,18 +73,14 @@
 
 p { 
     color: white;
-    padding: 1%;
     font-family: 'Righteous', serif;
     font-size: 2em; 
+    padding: 1%;
 }
 
 #instruction-page{
     margin: 5%;
 }
-
-
-
-@import url('https://fonts.googleapis.com/css?family=Raleway:200');
 
 #border {
   display: flex;
@@ -116,17 +113,10 @@ p {
   background-size: 300% 300%;
 }
 
-
 @keyframes animatedgradient {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
+	0% {background-position: 0% 50%;}
+	50% {background-position: 100% 50%;}
+	100% {background-position: 0% 50%;}
 }
 
 
