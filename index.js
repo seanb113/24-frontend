@@ -104,7 +104,7 @@ function compareTimes(){
     let recordContainer = document.getElementById("fastest-solve-time")
     let currentRecord = parseInt(recordContainer.innerText.split("0:")[1])
     let mode = selectedDifficulty().id
-        debugger
+        // debugger
     let difficulty = parseInt(selectedDifficulty().innerText.split(" ")[0])
     let clockedAt = parseInt(currentTimer().innerText.split(":")[1])
     if (clockedAt > currentRecord){
@@ -133,7 +133,7 @@ function renderSession(r){
     let hideMainHeader = document.getElementById("main-header")
     hideMainHeader.style.display = "none"
     getStatsDiv().appendChild(getHeader())
-    getHeader().innerText = `Welcome: ${r.name} `
+    getHeader().innerText = `User: ${r.name} `
     let scoreDiv = document.createElement("div")
     scoreDiv.id = "score-id"
     scoreDiv.dataset.id = r.id
@@ -165,7 +165,7 @@ function makeNumButtons(gameNumsArray){
     gameNumsArray.forEach(num => {
     let numBtn = document.createElement('button')
     numBtn.innerText = num
-    numBtn.className = "ui inverted grey button"
+    numBtn.className = "ui big inverted grey button"
     numberContainer().appendChild(numBtn)
     numBtn.addEventListener("click", () => populateUserInput(numBtn))
     })
@@ -283,7 +283,7 @@ function endGameButton(){
 }
 
 function numberButtons(){
-    return document.getElementsByClassName('ui inverted grey button')
+    return document.getElementsByClassName('ui big inverted grey button')
 }
 
 function giveUpHandler(){
@@ -355,7 +355,7 @@ function solve24(){
     //     var error = e.error
     //     alert("Check your equation")
     // })
-    debugger
+    // debugger
     if ((isDisabled().every(v => v === true)) && (isLegit())){
      console.log("hit first")
         // if parseInt(UserBox().value)
