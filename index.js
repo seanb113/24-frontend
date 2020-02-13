@@ -103,14 +103,14 @@ function compareTimes(){
     console.log("compareTimes")
     let recordContainer = document.getElementById("fastest-solve-time")
     let currentRecord = parseInt(recordContainer.innerText.split("0:")[1])
-    // let mode = selectedDifficulty().id
+    let mode = selectedDifficulty().id
         debugger
     let difficulty = parseInt(selectedDifficulty().innerText.split(" ")[0])
     let clockedAt = parseInt(currentTimer().innerText.split(":")[1])
     if (clockedAt > currentRecord){
         updateFastestTime()
         alert("You beat your previous fastest solve time!")
-        recordContainer.innerText = `Fastest solved equation: ${UserBox().value} in 0:${difficulty - clockedAt} seconds`
+        recordContainer.innerText = `Fastest solved equation: ${UserBox().value} in 0:${difficulty - clockedAt} seconds on ${mode} mode`
     }
 }
 
