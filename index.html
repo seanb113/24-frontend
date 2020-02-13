@@ -11,7 +11,7 @@
     <body id="body">
         <h1 id="main-header" data-shadow='Welcome!'>Welcome!</h1>
         <div class="ui form login" id="login-form">
-            <h2 id="header">Please login</h2>
+            <h2 id="header" >Please login</h2>
                 <div class="login">
                     <form class="add-user">
                         <div class="field">
@@ -29,14 +29,17 @@
                 </div>
         </div>
 
-        <div id="stats-div"></div>
+        <div id="stats-div" class="stats-div"></div>
 
         <div id="instruction-page">
-            <p>Object of the game: Make the number 24 from the four numbers shown. You can add, subtract, multiply, divide, and exponentiate. Use all four numbers on the card, but use each number only once. You do not have to use all four operations.</p>
+            <p>Object of the game: Make the number 24 from the four numbers shown. You can add, subtract, multiply, divide, and exponentiate. Use all four numbers on the card, but use each number only once. You do not have to use all five operations.</p>
+            
+            <div class="gradient-border" id="border"> <br> </div>
+            <br>
             <p>Choose your difficulty below</p>
-            <button id="easy" value="selector">90 Seconds</button>
-            <button id="medium" value="selector">60 Seconds</button>
-            <button id="hard" value="selector">30 Seconds</button>
+            <button id="easy" class="ui green button" value="selector">90 Seconds</button>
+            <button id="medium" class="ui yellow button" value="selector">60 Seconds</button>
+            <button id="hard" class="ui red button" value="selector">30 Seconds</button>
         </div>
 
         <div class="game-session">
