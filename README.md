@@ -1,6 +1,6 @@
 # 24 Game
 
-Welcome to the 24 Game, where you are given the chance to try your math skills by making a set of 4 numbers equal 24 through addition, subtraction, multiplication, dividson, and exponentiation. 
+Welcome to the 24 Game, where you are given the chance to try your math skills by making a set of 4 numbers equal 24 through addition, subtraction, multiplication, division, and exponentiation. 
 
 Available features:
 
