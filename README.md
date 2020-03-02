@@ -14,12 +14,12 @@ Available features:
 
 - Fork and clone this repo and [the backend repo](https://github.com/adybas/JS-24-Game-Backend)
 
-- first cd into the js-24-game-backend directory
+- first cd into the js-24-game-backend directory in the backend repo
   - Run `$ rails db:create`
   - Run `$ rails db:migrate`
   - Run `$ rails server`
   
-- cd into the js-24-game-frontend directory
+- After the backend is up, cd into the js-24-game-frontend directory
   - Run `$ bundle install`
   - Run `$ open index.html`
 
