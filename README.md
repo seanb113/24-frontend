@@ -14,7 +14,7 @@ Available features:
 
 - Fork and clone this repo and [the backend repo](https://github.com/adybas/JS-24-Game-Backend)
 
-- first cd into the js-24-game-backend directory in the backend repo
+- First cd into the js-24-game-backend directory in the backend repo
   - Run `$ rails db:create`
   - Run `$ rails db:migrate`
   - Run `$ rails server`
@@ -22,6 +22,26 @@ Available features:
 - After the backend is up, cd into the js-24-game-frontend directory
   - Run `$ bundle install`
   - Run `$ open index.html`
+
+## Screenshots of Game Play
+
+#### Welcome Screen
+![Welcome Screen](./public/img/welcome.png) 
+
+#### Game Instruction Screen
+![Game Instruction Screen](./public/img/instructions.png)
+
+#### Starting Screen
+![Starting Screen](./public/img/start-screen.png) 
+
+#### Give-Up Screen
+![Give-Up Screen](./public/img/give-up.png) 
+
+#### Solving Screen
+![Solving Screen](./public/img/solving-problem.png) 
+
+#### Correctly Solved Screen
+![Correctly Solved Screen](./public/img/correctly-solved-problem.png) 
 
 ## Frameworks and Libraries Used
 
@@ -41,18 +61,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/adybas
 ## License
 
 The code is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-
-## Screenshots of Game
-
-![Welcome Screen](./public/img/welcome.png) 
-
-![Game Instruction Screen](./public/img/instructions.png)
-
-![Starting Screen](./public/img/start-screen.png) 
-
-![Give-Up Screen](./public/img/give-up.png) 
-
-![Solving Screen](./public/img/solving-problem.png) 
-
-![Correctly Solved Screen](./public/img/correctly-solved-problem.png) 
