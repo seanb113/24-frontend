@@ -45,14 +45,14 @@ The code is available as open source under the terms of the [MIT License](https:
 
 ## Screenshots of Game
 
-[Image description](./public/img/welcome.png) 
+![Welcome Screen](./public/img/welcome.png) 
 
-[Image description](./public/img/instructions.png)
+![Game Instruction Screen](./public/img/instructions.png)
 
-[Image description](./public/img/start-screen.png) 
+![Starting Screen](./public/img/start-screen.png) 
 
-[Image description](./public/img/give-up.png) 
+![Give-Up Screen](./public/img/give-up.png) 
 
-[Image description](./public/img/solving-problem.png) 
+![Solving Screen](./public/img/solving-problem.png) 
 
-[Image description](./public/img/correctly-solved-problem.png) 
+![Correctly Solved Screen](./public/img/correctly-solved-problem.png) 
