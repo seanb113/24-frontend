@@ -41,3 +41,18 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/adybas
 ## License
 
 The code is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+
+## Screenshots of Game
+
+[Image description](./public/img/welcome.png) 
+
+[Image description](./public/img/instructions.png)
+
+[Image description](./public/img/start-screen.png) 
+
+[Image description](./public/img/give-up.png) 
+
+[Image description](./public/img/solving-problem.png) 
+
+[Image description](./public/img/correctly-solved-problem.png) 
