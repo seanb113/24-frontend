@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   resetButton().addEventListener("click", resetHandler);
   submitButton().addEventListener("click", solve24);
   giveUpButton().addEventListener(`click`, giveUpHandler);
-  loginContainer.addEventListener("submit", toggleLogin);
+  getLoginContainer().addEventListener("submit", toggleLogin);
 });
 
 const unsolvables = [
@@ -110,10 +110,8 @@ const unsolvables = [
 ];
 
 let joinedunsolves = unsolvables.map(arr => arr.join(""));
-const loginContainer = document.querySelector(".login");
-const gameContainer = document.querySelector(".game-session");
 let timer;
-gameContainer.style.display = "none";
+getGamesContainer().style.display = "none";
 difficultyButton().style.display = "none";
 
 function getHeader() {
@@ -122,6 +120,14 @@ function getHeader() {
 
 function getStatsDiv() {
   return document.getElementById("stats-div");
+}
+
+function getGamesContainer() {
+  return document.querySelector(".game-session");
+}
+
+function getLoginContainer() {
+  return document.querySelector(".login");
 }
 
 function timerContainer() {
@@ -199,37 +205,38 @@ function createTimer() {
   return thisTimer;
 }
 
-function difficultyInnerTime(){
-    createTimer();
-    let sec = parseInt(selectedDifficulty().innerText.split(" ")[0]);
-    timer = setInterval(function() {
-      timerContainer().children[0].innerHTML = ":" + sec;
-      sec--;
-      if (sec < 0) {
-        clearInterval(timer);
-        giveUpHandler();
-      }
-    }, 1000);
-    numGenerator();
+function difficultyInnerTime() {
+  createTimer();
+  let sec = parseInt(selectedDifficulty().innerText.split(" ")[0]);
+  timer = setInterval(function() {
+    timerContainer().children[0].innerHTML = ":" + sec;
+    sec--;
+    if (sec < 0) {
+      clearInterval(timer);
+      giveUpHandler();
+    }
+  }, 1000);
+  numGenerator();
 }
 
 function chooseDifficulty() {
   if (event.target.value === "selector") {
     getStatsDiv().style.display = "block";
     event.target.dataset.id = "clicked";
-    difficultyInnerTime()
-    gameContainer.style.display = "block";
+    difficultyInnerTime();
+    getGamesContainer().style.display = "block";
   } else if (
-    event.target.innerText === "New Game" || event.target.innerText === "Next Game"
+    event.target.innerText === "New Game" ||
+    event.target.innerText === "Next Game"
   ) {
-    difficultyInnerTime()
+    difficultyInnerTime();
   }
 }
 
 function toggleLogin() {
   event.preventDefault();
-  (loginContainer.style.display = "none"),
-    (difficultyButton().style.display = "block");
+  getLoginContainer().style.display = "none";
+  difficultyButton().style.display = "block";
   processLogin();
 }
 
@@ -272,9 +279,7 @@ function updateFastestTime() {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({ fastest_time: newRecord })
-  })
-    .then(r => r.json())
-    .then(console.log);
+  });
 }
 
 function renderSession(r) {
@@ -295,15 +300,7 @@ function renderSession(r) {
   console.log(r);
 }
 
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 function makeNumButtons(gameNumsArray) {
-  console.log("making buttons");
-  let i = 1;
   gameNumsArray.forEach(num => {
     let numBtn = document.createElement("button");
     numBtn.innerText = num;
@@ -313,19 +310,25 @@ function makeNumButtons(gameNumsArray) {
   });
 }
 
+function getRandomInteger(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 function numGenerator() {
   difficultyButton().style.display = "none";
   clearDiv(solutionList());
-  const gameNumbers = Array.from({ length: 4 }, () => getRandomInt(1, 9));
+  const gameNumbers = Array.from({ length: 4 }, () => getRandomInteger(1, 9));
   checkGameNums(gameNumbers) ? numGenerator() : makeNumButtons(gameNumbers);
 }
 
-function checkGameNums(thisThing) {
-  let sorted = thisThing.sort(function(a, b) {
-    return a - b;
+function checkGameNums(gameNumbers) {
+  let sortedNums = gameNumbers.sort(function(a, b) {
+    a - b;
   });
-  let joined = sorted.join("");
-  return unsolvables.find(arr => arr.join("").includes(joined));
+  let joinedNums = sortedNums.join("");
+  return unsolvables.find(arr => arr.join("").includes(joinedNums));
 }
 
 function nextGameHandler() {
@@ -430,22 +433,24 @@ function newGameHandler() {
   submitButton().addEventListener("click", solve24);
 }
 
-function isDisabled() {
+function isBtnDisabled() {
   let checkedButtons = Array.from(numberButtons());
   return checkedButtons.map(btn => btn.disabled);
 }
 
-function isLegit() {
+function isLegitInput() {
   let userSolution = UserBox()
     .value.split(/[^\d]/)
     .filter(word => word.length > 0);
   return userSolution.length === 4;
 }
+
 function solve24() {
-  if (isDisabled().every(v => v === true) && isLegit()) {
-    console.log("hit first");
+  if (
+    isBtnDisabled().every(btnStatus => btnStatus === true) &&
+    isLegitInput()
+  ) {
     if (math.evaluate(UserBox().value) == 24) {
-      console.log("hit second");
       incrementScore();
       alert(`You got 24 through ${UserBox().value}!`);
       compareTimes();
