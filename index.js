@@ -441,7 +441,7 @@ function isBtnDisabled() {
 function isLegitInput() {
   let userSolution = UserBox()
     .value.split(/[^\d]/)
-    .filter(word => word.length > 0);
+    .filter(userInputArr => userInputArr.length > 0);
   return userSolution.length === 4;
 }
 
