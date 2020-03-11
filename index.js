@@ -110,9 +110,9 @@ const unsolvables = [
 ];
 
 let joinedunsolves = unsolvables.map(arr => arr.join(""));
-let timer;
 const loginContainer = document.querySelector(".login");
 const gameContainer = document.querySelector(".game-session");
+let timer;
 gameContainer.style.display = "none";
 difficultyButton().style.display = "none";
 
@@ -128,6 +128,70 @@ function timerContainer() {
   return document.getElementById("safeTimer");
 }
 
+function currentTimer() {
+  return document.getElementById("safeTimerDisplay");
+}
+
+function numberContainer() {
+  return document.getElementById("number-container");
+}
+
+function resetButton() {
+  return document.getElementById("reset-button");
+}
+
+function selectedDifficulty() {
+  return document.querySelector('[data-id="clicked"]');
+}
+
+function UserBox() {
+  return document.getElementById("user-input-box");
+}
+
+function difficultyButton() {
+  return document.getElementById("instruction-page");
+}
+
+function easyButton() {
+  return document.getElementById("easy");
+}
+
+function mediumButton() {
+  return document.getElementById("medium");
+}
+
+function hardButton() {
+  return document.getElementById("hard");
+}
+
+function submitButton() {
+  return document.getElementById("submit-button");
+}
+
+function nextGameButton() {
+  return document.getElementById("next-game-button");
+}
+
+function giveUpButton() {
+  return document.getElementById("give-up-button");
+}
+
+function endGameButton() {
+  return document.getElementById("end-game-button");
+}
+
+function numberButtons() {
+  return document.getElementsByClassName("ui big inverted grey button");
+}
+
+function solutionList() {
+  return document.querySelector(".solutions");
+}
+
+function newGameButton() {
+  return document.getElementById("new-game-button");
+}
+
 function createTimer() {
   let thisTimer = document.createElement("p");
   thisTimer.id = "safeTimerDisplay";
@@ -135,43 +199,30 @@ function createTimer() {
   return thisTimer;
 }
 
-function currentTimer() {
-  return document.getElementById("safeTimerDisplay");
+function difficultyInnerTime(){
+    createTimer();
+    let sec = parseInt(selectedDifficulty().innerText.split(" ")[0]);
+    timer = setInterval(function() {
+      timerContainer().children[0].innerHTML = ":" + sec;
+      sec--;
+      if (sec < 0) {
+        clearInterval(timer);
+        giveUpHandler();
+      }
+    }, 1000);
+    numGenerator();
 }
 
 function chooseDifficulty() {
   if (event.target.value === "selector") {
     getStatsDiv().style.display = "block";
     event.target.dataset.id = "clicked";
-    createTimer();
-    let sec = parseInt(event.target.innerText.split(" ")[0]);
-    console.log(sec);
-    timer = setInterval(function() {
-      timerContainer().children[0].innerHTML = ":" + sec;
-      sec--;
-      if (sec < 0) {
-        clearInterval(timer);
-        giveUpHandler();
-      }
-    }, 1000);
-    get24From();
+    difficultyInnerTime()
     gameContainer.style.display = "block";
   } else if (
-    event.target.innerText === "New Game" ||
-    event.target.innerText === "Next Game"
+    event.target.innerText === "New Game" || event.target.innerText === "Next Game"
   ) {
-    createTimer();
-    let sec = parseInt(selectedDifficulty().innerText.split(" ")[0]);
-    console.log(sec);
-    timer = setInterval(function() {
-      timerContainer().children[0].innerHTML = ":" + sec;
-      sec--;
-      if (sec < 0) {
-        clearInterval(timer);
-        giveUpHandler();
-      }
-    }, 1000);
-    get24From();
+    difficultyInnerTime()
   }
 }
 
@@ -197,7 +248,6 @@ function processLogin() {
 }
 
 function compareTimes() {
-  console.log("compareTimes");
   let recordContainer = document.getElementById("fastest-solve-time");
   let currentRecord = parseInt(recordContainer.innerText.split("0:")[1]);
   let mode = selectedDifficulty().id;
@@ -251,10 +301,6 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function numberContainer() {
-  return document.getElementById("number-container");
-}
-
 function makeNumButtons(gameNumsArray) {
   console.log("making buttons");
   let i = 1;
@@ -267,16 +313,14 @@ function makeNumButtons(gameNumsArray) {
   });
 }
 
-function get24From() {
+function numGenerator() {
   difficultyButton().style.display = "none";
   clearDiv(solutionList());
   const gameNumbers = Array.from({ length: 4 }, () => getRandomInt(1, 9));
-  checkGameNums(gameNumbers) ? get24From() : makeNumButtons(gameNumbers);
-  // makeNumButtons(gameNumbers)
+  checkGameNums(gameNumbers) ? numGenerator() : makeNumButtons(gameNumbers);
 }
 
 function checkGameNums(thisThing) {
-  console.log("checking numbers");
   let sorted = thisThing.sort(function(a, b) {
     return a - b;
   });
@@ -295,7 +339,7 @@ function nextGameHandler() {
   submitButton().addEventListener("click", solve24);
   resetHandler();
   giveUpButton().innerText = "Give Up?";
-  get24From();
+  numGenerator();
 }
 
 function incrementScore() {
@@ -310,9 +354,7 @@ function incrementScore() {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({ score: newScore })
-  })
-    .then(r => r.json())
-    .then(console.log);
+  });
 }
 
 function clearDiv(div) {
@@ -321,22 +363,11 @@ function clearDiv(div) {
   }
 }
 
-function resetButton() {
-  return document.getElementById("reset-button");
-}
-
-function selectedDifficulty() {
-  return document.querySelector('[data-id="clicked"]');
-}
-
 function resetHandler() {
   UserBox().value = "";
   document.querySelectorAll("button").forEach(button => {
     button.disabled = false;
   });
-}
-function UserBox() {
-  return document.getElementById("user-input-box");
 }
 
 function operators() {
@@ -354,37 +385,6 @@ function inputOperation(button) {
 function populateUserInput(numBtn) {
   UserBox().value = UserBox().value + numBtn.innerText;
   numBtn.disabled = true;
-}
-
-function difficultyButton() {
-  return document.getElementById("instruction-page");
-}
-function easyButton() {
-  return document.getElementById("easy");
-}
-function mediumButton() {
-  return document.getElementById("medium");
-}
-function hardButton() {
-  return document.getElementById("hard");
-}
-function submitButton() {
-  return document.getElementById("submit-button");
-}
-function nextGameButton() {
-  return document.getElementById("next-game-button");
-}
-
-function giveUpButton() {
-  return document.getElementById("give-up-button");
-}
-
-function endGameButton() {
-  return document.getElementById("end-game-button");
-}
-
-function numberButtons() {
-  return document.getElementsByClassName("ui big inverted grey button");
 }
 
 function giveUpHandler() {
@@ -420,7 +420,6 @@ function renderSolution(r) {
 }
 
 function newGameHandler() {
-  // clearInterval(timer)
   UserBox().value = "";
   chooseDifficulty();
   resetButton().disabled = false;
@@ -430,12 +429,7 @@ function newGameHandler() {
   submitButton().innerText = "Submit";
   submitButton().addEventListener("click", solve24);
 }
-function solutionList() {
-  return document.querySelector(".solutions");
-}
-function newGameButton() {
-  return document.getElementById("new-game-button");
-}
+
 function isDisabled() {
   let checkedButtons = Array.from(numberButtons());
   return checkedButtons.map(btn => btn.disabled);
