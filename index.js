@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   resetButton().addEventListener("click", resetHandler);
   submitButton().addEventListener("click", solve24);
   giveUpButton().addEventListener(`click`, giveUpHandler);
+  deleteButton().addEventListener('click', deleteInput)
   getLoginContainer().addEventListener("submit", toggleLogin);
 });
 
@@ -196,6 +197,10 @@ function solutionList() {
 
 function newGameButton() {
   return document.getElementById("new-game-button");
+}
+
+function deleteButton() {
+  return document.getElementById("delete-button")
 }
 
 function createTimer() {
@@ -400,6 +405,20 @@ function giveUpHandler() {
   fetch(`https://helloacm.com/api/24/?a=${f1}&b=${f2}&c=${f3}&d=${f4}`)
     .then(r => r.json())
     .then(r => renderSolution(r));
+}
+
+
+function deleteInput(){
+  let newInput = UserBox().value.slice(0, -1)
+  let deleted = UserBox().value.slice(-1)
+  UserBox().value = newInput
+  let reactivated = document.getElementById(deleted + ‘button’)
+  if (!reactivated.disabled){
+  reactivated.id = deleted + ‘button+’
+  nextBtn = document.getElementById(deleted + ‘button’)
+  nextBtn.disabled = false
+  reactivated.id = deleted + ‘button’}
+  else reactivated.disabled = false
 }
 
 function renderSolution(r) {
