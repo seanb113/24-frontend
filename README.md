@@ -51,8 +51,8 @@ Available features:
 
 ## Author
 
-- Anna Dybas (https://github.com/adybas)
 - Sean Beach (https://github.com/seanb113)
+- Anna Dybas (https://github.com/adybas)
 
 ## Contributing
 
